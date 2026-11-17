@@ -1,12 +1,21 @@
 ﻿
 using System.Collections.ObjectModel;
 using System.Windows;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace Dolgozatok
 {
     public partial class MainWindow : Window
     {
         private ObservableCollection<Dolgozo> dolgozok = new ObservableCollection<Dolgozo>();
+
+        private readonly string fajlUtvonal = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Dolgozatok","dolgozatok.json"
+);
 
         public MainWindow()
         {
@@ -28,6 +37,42 @@ namespace Dolgozatok
             dolgozok.Add(new Dolgozo("Molnár Réka", 18, 89));
             dolgozok.Add(new Dolgozo("Lakatos Dániel", 17, 72));
         }
+
+
+        private void AdatokBetoltese()
+        {
+            if (File.Exists(fajlUtvonal))
+            {
+                try
+                {
+                    string json = File.ReadAllText(fajlUtvonal);
+
+                    List<Dolgozo> adatok =
+                        JsonSerializer.Deserialize<List<Dolgozo>>(json);
+
+                    dolgozok.Clear();
+
+                    if (adatok != null)
+                    {
+                        foreach (Dolgozo dolgozo in adatok)
+                        {
+                            dolgozok.Add(dolgozo);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Hiba történt az adatok betöltésekor!");
+                    dolgozok.Clear();
+                    AlapAdatok();
+                }
+            }
+            else
+            {
+                AlapAdatok();
+            }
+        }
+
 
 
         private void btnHozzaadas_Click(object sender, RoutedEventArgs e)
@@ -88,4 +133,6 @@ namespace Dolgozatok
             Pontszam = pontszam;
         }
     }
+
+
 }

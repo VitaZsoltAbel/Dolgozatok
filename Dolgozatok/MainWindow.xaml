@@ -103,7 +103,8 @@
                     Content="Mentés"
                     Width="140"
                     Height="43"
-                    FontSize="16"/>
+                    FontSize="16"
+                    Click="btnMentes_Click"/>
         </StackPanel>
     </Grid>
 </Window>
