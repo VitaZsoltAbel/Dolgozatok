@@ -96,7 +96,8 @@
                     Width="140"
                     Height="43"
                     FontSize="16"
-                    Margin="0,0,15,0"/>
+                    Margin="0,0,15,0"
+                    Click="btnHozzaadas_Click"/>
 
             <Button x:Name="btnMentes"
                     Content="Mentés"
